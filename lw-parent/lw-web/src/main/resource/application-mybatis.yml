@@ -1,0 +1,15 @@
+mybatis:
+  typeAliasesPackage: com.lw.**.domain
+  mapperLocations: classpath*:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: true
+    use-generated-keys: true
+    default-executor-type: reuse
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: false
+  supportMethodsArguments: true
+  params: count=countSql
