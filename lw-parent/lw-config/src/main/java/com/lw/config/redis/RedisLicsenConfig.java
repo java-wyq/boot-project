@@ -23,8 +23,8 @@ public class RedisLicsenConfig {
         container.setConnectionFactory(connectionFactory);
         return container;
     }
-    @Bean
-    public RedisKeysExpireListener keysExpireListener(RedisMessageListenerContainer listenerContainer){
-        return new RedisKeysExpireListener(listenerContainer);
-    }
+//    @Bean
+//    public RedisKeysExpireListener keysExpireListener(RedisMessageListenerContainer listenerContainer){
+//        return new RedisKeysExpireListener(listenerContainer);
+//    }
 }

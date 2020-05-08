@@ -5,12 +5,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.listener.KeyExpirationEventMessageListener;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
+import org.springframework.stereotype.Component;
 
 /**
  * @author wangyanqiang
- * @title: RedisKeysExpireListener 实现自己的key监听过期后的业务逻辑，需要在RedisLicsenConfig中注册自己的bean
+ * @title: RedisKeysExpireListener 实现自己的key监听过期后的业务逻辑，需要在SpringIOC中注册自己的bean
  * @date 2020/4/2911:20
  */
+@Component
 public class RedisKeysExpireListener extends KeyExpirationEventMessageListener {
 
     private static final Logger logger = LoggerFactory.getLogger(RedisKeysExpireListener.class);

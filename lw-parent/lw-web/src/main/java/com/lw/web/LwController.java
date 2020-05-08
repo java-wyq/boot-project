@@ -42,7 +42,7 @@ public class LwController {
     public AjaxResult put(@PathVariable("key")String key){
         Object o = RedisUtils.get(key);
         if(null == o){
-            RedisUtils.set(key,key);
+            RedisUtils.set(key,key,30);
         }
         return AjaxResult.success();
     }
