@@ -1,11 +1,15 @@
 package com.lw.utils;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.xml.bind.DatatypeConverter;
 import java.util.Date;
 import java.util.Map;
 
@@ -52,7 +56,7 @@ public class JwtTokenUtils {
             return Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
         } catch (JwtException e) {
             logger.info("jwt exception info :" + e.getMessage() + " cause: " + e.getCause());
+            throw e;
         }
-        return null;
     }
 }

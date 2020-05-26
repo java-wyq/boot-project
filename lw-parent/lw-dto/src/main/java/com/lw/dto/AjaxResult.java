@@ -76,6 +76,12 @@ public class AjaxResult extends HashMap<String, Object>
         super.put(MSG_TAG, msg);
     }
 
+    public AjaxResult(Integer status, String msg)
+    {
+        super.put(CODE_TAG, status);
+        super.put(MSG_TAG, msg);
+    }
+
     /**
      * 初始化一个新创建的 AjaxResult 对象
      * 

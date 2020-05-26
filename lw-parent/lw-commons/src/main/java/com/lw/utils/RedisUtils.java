@@ -92,6 +92,10 @@ public class RedisUtils {
         redisTemplate.opsForValue().set(key, value);
     }
 
+    public static void set(final String key, final long value) {
+        redisTemplate.opsForValue().increment(key, value);
+    }
+
     // 存储普通对象操作
 
     /**

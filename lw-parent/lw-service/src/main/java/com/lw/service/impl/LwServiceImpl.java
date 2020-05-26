@@ -45,4 +45,5 @@ private static final Logger logger = LoggerFactory.getLogger(LwServiceImpl.class
     public void execueAsync(List<Object> list) {
 
     }
+
 }

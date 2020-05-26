@@ -1,6 +1,6 @@
 package com.lw.utils;
 
-import com.lw.config.snowflake.SnowflakeIdWorker;
+import com.lw.snowflake.SnowflakeIdWorker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

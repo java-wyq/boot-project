@@ -1,6 +1,4 @@
-package com.lw.config.snowflake;
-
-import org.springframework.stereotype.Component;
+package com.lw.snowflake;
 
 /**
  * @author wangyanqiang

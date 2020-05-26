@@ -1,10 +1,11 @@
 package com.lw.web;
 
-import com.alibaba.fastjson.JSON;
+import com.lw.config.annotation.AccessLimit;
 import com.lw.domain.LwEntity;
+import com.lw.domain.Person;
 import com.lw.dto.AjaxResult;
 import com.lw.service.impl.LwServiceImpl;
-import com.lw.config.snowflake.SnowflakeIdWorker;
+import com.lw.utils.BeanToMapUtil;
 import com.lw.utils.IdGeneratorUtils;
 import com.lw.utils.JwtTokenUtils;
 import com.lw.utils.RedisUtils;
@@ -12,6 +13,7 @@ import io.jsonwebtoken.Claims;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -58,7 +60,17 @@ public class LwController {
     @RequestMapping("/token")
     public AjaxResult getToken(){
         Map<String, Object> map = new HashMap<>();
-        map.put("id",123465);
+        map.put("userId",123465);
+        map.put("name","lw");
+        map.put("age",18);
+        String s = JwtTokenUtils.create(map);
+        logger.info("test get token : " + s);
+        return AjaxResult.success("get token successfully",s);
+    }
+    @RequestMapping("/token1")
+    public AjaxResult getToken1(){
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId",1234657);
         map.put("name","lw");
         map.put("age",18);
         String s = JwtTokenUtils.create(map);
@@ -84,5 +96,27 @@ public class LwController {
         return AjaxResult.success(dateCenterId);
     }
 
+    @GetMapping("/test")
+    public AjaxResult test(){
+        LwEntity lwEntity = new LwEntity();
+        lwEntity.setAge(18);
+        lwEntity.setId(IdGeneratorUtils.getInstance().nextId());
+        lwEntity.setName("lw");
+
+        Person person= new Person();
+        person.setAge(18);
+        person.setName(null);
+        person.setId(8564741674L);
+        Map<String, Object> map = BeanToMapUtil.castBeanToMapWithIndex(new int[]{1},lwEntity);
+        Map<String, Object> map1 = BeanToMapUtil.castBeanToMapWithRequiredFiled(new String[]{"name","id"},lwEntity);
+        Map<String, Object> map2 = BeanToMapUtil.castBeanToMapWithNotRequiredFiled(new String[]{"age","id"},person);
+        return AjaxResult.success(map2);
+    }
+
+    @GetMapping("/app/testAccess")
+    @AccessLimit(limit = 5,timeScope = 60)
+    public AjaxResult testAccess(){
+        return AjaxResult.success();
+    }
 
 }
