@@ -1,0 +1,11 @@
+server:
+  servlet:
+    context-path: /lw
+  port: 8888
+spring:
+  profiles:
+    active: dev
+    include: quartz,mybatis,async
+
+
+

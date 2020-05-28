@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lw.dao.DataSourceMapper">
+    <resultMap id="BaseResultMap" type="com.lw.config.datasource.DataSource">
+        <id column="datasource_id" jdbcType="VARCHAR" property="datasourceId" />
+        <result column="url" jdbcType="VARCHAR" property="url" />
+        <result column="user_name" jdbcType="VARCHAR" property="userName" />
+        <result column="pass_word" jdbcType="VARCHAR" property="passWord" />
+        <result column="database_type" jdbcType="VARCHAR" property="databaseType" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        datasource_id, url, user_name,pass_word,database_type
+    </sql>
+
+    <select id="get" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from database_source
+    </select>
+
+</mapper>

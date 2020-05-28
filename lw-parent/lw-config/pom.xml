@@ -43,7 +43,6 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
-
     <build>
         <finalName>lw-config</finalName>
     </build>

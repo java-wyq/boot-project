@@ -18,24 +18,6 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.mybatis.spring.boot</groupId>
-      <artifactId>mybatis-spring-boot-starter</artifactId>
-      <version>${mybatis.starter.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-      <scope>runtime</scope>
-      <version>${mysql.connector.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.alibaba</groupId>
-      <artifactId>druid-spring-boot-starter</artifactId>
-      <version>${alibaba.druid}</version>
-    </dependency>
-    <dependency>
       <groupId>com.lw</groupId>
       <artifactId>lw-dto</artifactId>
       <version>1.0-SNAPSHOT</version>
@@ -43,6 +25,11 @@
     <dependency>
       <groupId>com.lw</groupId>
       <artifactId>lw-domain</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>com.lw</groupId>
+      <artifactId>lw-config</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
 

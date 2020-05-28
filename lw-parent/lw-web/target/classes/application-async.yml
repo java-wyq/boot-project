@@ -1,0 +1,5 @@
+thread:
+  corePoolSize: 8
+  maxPoolSize: 16
+  queueCapacity: 10000
+  name: A-S
