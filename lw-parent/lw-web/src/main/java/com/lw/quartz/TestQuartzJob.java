@@ -15,6 +15,6 @@ public class TestQuartzJob extends QuartzJobBean {
     Logger logger = LoggerFactory.getLogger(TestQuartzJob.class);
     @Override
     protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        logger.info("test quartz every one minite");
+        logger.info("test quartz every one hour");
     }
 }

@@ -17,5 +17,5 @@ spring:
             threadPriority: 5
             threadsInheritContextClassLoaderOfInitializingThread: true
 lw:
-  test_cron_exp: 0 */1 * * * ?
+  test_cron_exp: 0 0 */1 * * ?
 

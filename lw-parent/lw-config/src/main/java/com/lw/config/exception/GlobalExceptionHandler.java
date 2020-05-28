@@ -21,14 +21,16 @@ public class GlobalExceptionHandler {
 
     @ResponseBody
     @ExceptionHandler
-    public AjaxResult defaultExceptionHandler(HttpServletRequest request,Exception ex){
+    public AjaxResult defaultExceptionHandler(HttpServletRequest request,Exception ex) throws Exception {
         if(ex instanceof AccessLimitException){
             return new AjaxResult(((AccessLimitException) ex).getStatus(),ex.getMessage());
         }
         if(ex instanceof JwtException){
             return new AjaxResult(AjaxResult.Type.ERROR,"accessToken should not be trusted ...");
+        }else {
+            throw ex;
         }
-        return new AjaxResult(AjaxResult.Type.WARN,ex.getMessage());
+//        return new AjaxResult(AjaxResult.Type.WARN,ex.getMessage());
     }
 
 }

@@ -35,11 +35,10 @@ public class LwController {
     private LwServiceImpl lwService;
 
     @RequestMapping("/get/{id}")
-    public AjaxResult get(@PathVariable("id")Long id){
+    public AjaxResult getId(@PathVariable("id")Long id){
         LwEntity lwEntity = lwService.selectByPrimaryKey(id);
         return AjaxResult.success(lwEntity);
     }
-
     @RequestMapping("/put/{key}")
     public AjaxResult put(@PathVariable("key")String key){
         Object o = RedisUtils.get(key);
