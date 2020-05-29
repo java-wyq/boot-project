@@ -23,8 +23,8 @@ public class DBChangeServiceImpl implements IDBChangeService {
     @Autowired
     private DynamicDataSource dynamicDataSource;
     @Override
-    public List<DataSource> get() {
-        return dataSourceMapper.get();
+    public List<DataSource> getDataSourceList() {
+        return dataSourceMapper.getDataSourceList();
     }
  
     @Override
@@ -32,8 +32,8 @@ public class DBChangeServiceImpl implements IDBChangeService {
  
         //默认切换到主数据源,进行整体资源的查找
         DBContextHolder.clearDataSource();
- 
-        List<DataSource> dataSourcesList = dataSourceMapper.get();
+
+        List<DataSource> dataSourcesList = dataSourceMapper.getDataSourceList();
  
         for (DataSource dataSource : dataSourcesList) {
             if (dataSource.getDatasourceId().equals(datasourceId)) {

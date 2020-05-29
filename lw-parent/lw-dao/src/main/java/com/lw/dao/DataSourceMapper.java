@@ -7,5 +7,5 @@ import java.util.List;
 
 @Mapper
 public interface DataSourceMapper {
-    List<DataSource> get();
+    List<DataSource> getDataSourceList();
 }

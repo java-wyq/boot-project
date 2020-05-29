@@ -15,6 +15,8 @@ import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
@@ -130,13 +132,13 @@ public class DruidDBConfig {
         sqlSessionFactoryBean.setConfiguration(configuration());
 
         // 设置mybatis的主配置文件
-//        ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+        ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         // Resource mybatisConfigXml = resolver.getResource("classpath:mybatis/mybatis-config.xml");
         //  sqlSessionFactoryBean.setConfigLocation(mybatisConfigXml);
         // 设置别名包
-        //  sqlSessionFactoryBean.setTypeAliasesPackage("com.testdb.dbsource.pojo");
+          sqlSessionFactoryBean.setTypeAliasesPackage("com.lw");
         //就是这句代码，只能指定单个mapper.xml文件，加通配符的话找不到文件
-//        sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath:mybatis/mapper/*.xml"));
+        sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath*:mapper/*.xml"));
         return sqlSessionFactoryBean.getObject();
     }
 
