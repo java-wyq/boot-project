@@ -14,7 +14,6 @@ public class DataSource {
     private String userName;
     @NonNull
     private String passWord;
-    private String code;
     @NonNull
     private String databaseType;
 }
