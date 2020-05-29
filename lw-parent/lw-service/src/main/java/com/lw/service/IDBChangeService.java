@@ -7,6 +7,7 @@ public interface IDBChangeService {
  
     List<DataSource> getDataSourceList();
  
+    boolean changeDb(String datasourceId,String tenantId) throws Exception;
     boolean changeDb(String datasourceId) throws Exception;
- 
+
 }

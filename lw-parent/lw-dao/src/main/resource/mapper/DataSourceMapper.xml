@@ -7,16 +7,22 @@
         <result column="user_name" jdbcType="VARCHAR" property="userName" />
         <result column="pass_word" jdbcType="VARCHAR" property="passWord" />
         <result column="database_type" jdbcType="VARCHAR" property="databaseType" />
+        <result column="tenant_id" jdbcType="VARCHAR" property="tenantId" />
     </resultMap>
 
     <sql id="Base_Column_List">
-        datasource_id, url, user_name,pass_word,database_type
+        datasource_id, url, user_name,pass_word,database_type,tenant_id
     </sql>
 
     <select id="getDataSourceList" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
         from database_source
+    </select>
+    <select id="get" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from database_source where datasource_id = #{dataSourceId} and tenant_id=#{tenantId}
     </select>
 
 </mapper>

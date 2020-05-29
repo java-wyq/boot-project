@@ -16,9 +16,9 @@ public class TestDataSourceController {
     private LwServiceImpl lwService;
     @Autowired
     private DBChangeServiceImpl dbChangeService;
-    @RequestMapping("test/{id}")
-    public AjaxResult getId(@PathVariable("id")String id) throws Exception {
-        dbChangeService.changeDb(id);
+    @RequestMapping("test/{id}/{tenantId}")
+    public AjaxResult getId(@PathVariable("id")String id,@PathVariable("tenantId")String tenantId) throws Exception {
+        dbChangeService.changeDb(id,tenantId);
         LwEntity lwEntity = lwService.selectByPrimaryKey(123456L);
         return AjaxResult.success(lwEntity);
     }

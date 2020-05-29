@@ -1,10 +1,12 @@
 package com.lw.config.datasource;
+
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.stat.DruidDataSourceStatManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 import org.springframework.util.StringUtils;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Map;
@@ -24,14 +26,13 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
         if (!StringUtils.isEmpty(datasource)) {
             Map<Object, Object> dynamicTargetDataSources2 = this.dynamicTargetDataSources;
             if (dynamicTargetDataSources2.containsKey(datasource)) {
-                log.info("---当前数据源：" + datasource + "---");
+                log.info("当前数据源--->{}", datasource);
             } else {
-                log.info("不存在的数据源：");
+                log.info("不存在的数据源--->{}",datasource);
                 return null;
-//                    throw new ADIException("不存在的数据源："+datasource,500);
             }
         } else {
-            log.info("---当前数据源：默认数据源---");
+            log.info("当前数据源--->默认数据源");
         }
 
         return datasource;
@@ -53,14 +54,12 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
             try { // 排除连接不上的错误
                 Class.forName(driveClass);
                 DriverManager.getConnection(url, username, password);// 相当于连接数据库
-
             } catch (Exception e) {
-
                 return false;
             }
             @SuppressWarnings("resource")
 //            HikariDataSource druidDataSource = new HikariDataSource();
-                    DruidDataSource druidDataSource = new DruidDataSource();
+            DruidDataSource druidDataSource = new DruidDataSource();
             druidDataSource.setName(key);
             druidDataSource.setDriverClassName(driveClass);
             druidDataSource.setUrl(url);
@@ -101,14 +100,14 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
             this.dynamicTargetDataSources.put(key, druidDataSource);
             setTargetDataSources(this.dynamicTargetDataSources);// 将map赋值给父类的TargetDataSources
             super.afterPropertiesSet();// 将TargetDataSources中的连接信息放入resolvedDataSources管理
-            log.info(key+"数据源初始化成功");
-            //log.info(key+"数据源的概况："+druidDataSource.dump());
+            log.info("数据源初始化成功--->{}",key);
             return true;
         } catch (Exception e) {
             log.error(e + "");
             return false;
         }
     }
+
     // 删除数据源
     public boolean delDatasources(String datasourceid) {
         Map<Object, Object> dynamicTargetDataSources2 = this.dynamicTargetDataSources;
@@ -147,8 +146,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
     }
 
     /**
-     * @param debug
-     *            the debug to set
+     * @param debug the debug to set
      */
     public void setDebug(boolean debug) {
         this.debug = debug;
@@ -169,8 +167,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
     }
 
     /**
-     * @param dynamicTargetDataSources
-     *            the dynamicTargetDataSources to set
+     * @param dynamicTargetDataSources the dynamicTargetDataSources to set
      */
     public void setDynamicTargetDataSources(Map<Object, Object> dynamicTargetDataSources) {
         this.dynamicTargetDataSources = dynamicTargetDataSources;
@@ -184,8 +181,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
     }
 
     /**
-     * @param dynamicDefaultTargetDataSource
-     *            the dynamicDefaultTargetDataSource to set
+     * @param dynamicDefaultTargetDataSource the dynamicDefaultTargetDataSource to set
      */
     public void setDynamicDefaultTargetDataSource(Object dynamicDefaultTargetDataSource) {
         this.dynamicDefaultTargetDataSource = dynamicDefaultTargetDataSource;
@@ -193,39 +189,39 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
 
     public void createDataSourceWithCheck(DataSource dataSource) throws Exception {
         String datasourceId = dataSource.getDatasourceId();
-        log.info("正在检查数据源："+datasourceId);
+        log.info("正在检查数据源--->{}",datasourceId);
         Map<Object, Object> dynamicTargetDataSources2 = this.dynamicTargetDataSources;
         if (dynamicTargetDataSources2.containsKey(datasourceId)) {
-            log.info("数据源"+datasourceId+"之前已经创建，准备测试数据源是否正常...");
+            log.info("数据源--->{}",datasourceId + "已经创建，测试数据源是否正常...");
             //DataSource druidDataSource = (DataSource) dynamicTargetDataSources2.get(datasourceId);
             DruidDataSource druidDataSource = (DruidDataSource) dynamicTargetDataSources2.get(datasourceId);
             boolean rightFlag = true;
             Connection connection = null;
             try {
-                log.info(datasourceId+"数据源的概况->当前闲置连接数："+druidDataSource.getPoolingCount());
+                log.info(datasourceId + "数据源的概况--->当前闲置连接数：" + druidDataSource.getPoolingCount());
                 long activeCount = druidDataSource.getActiveCount();
-                log.info(datasourceId+"数据源的概况->当前活动连接数："+activeCount);
-                if(activeCount > 0) {
-                    log.info(datasourceId+"数据源的概况->活跃连接堆栈信息："+druidDataSource.getActiveConnectionStackTrace());
+                log.info(datasourceId + "数据源的概况--->当前活动连接数：" + activeCount);
+                if (activeCount > 0) {
+                    log.info(datasourceId + "数据源的概况--->活跃连接堆栈信息：" + druidDataSource.getActiveConnectionStackTrace());
                 }
                 log.info("准备获取数据库连接...");
                 connection = druidDataSource.getConnection();
-                log.info("数据源"+datasourceId+"正常");
+                log.info("数据源--->{}",datasourceId + "正常");
             } catch (Exception e) {
-                log.error(e.getMessage(),e); //把异常信息打印到日志文件
+                log.error(e.getMessage(), e); //把异常信息打印到日志文件
                 rightFlag = false;
-                log.info("缓存数据源"+datasourceId+"已失效，准备删除...");
-                if(delDatasources(datasourceId)) {
+                log.info("缓存数据源--->" + datasourceId + "已失效，准备删除...");
+                if (delDatasources(datasourceId)) {
                     log.info("缓存数据源删除成功");
                 } else {
                     log.info("缓存数据源删除失败");
                 }
             } finally {
-                if(null != connection) {
+                if (null != connection) {
                     connection.close();
                 }
             }
-            if(rightFlag) {
+            if (rightFlag) {
                 log.info("不需要重新创建数据源");
                 return;
             } else {
@@ -239,10 +235,10 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
 
     }
 
-    private  void createDataSource(DataSource dataSource) throws Exception {
+    private void createDataSource(DataSource dataSource) throws Exception {
         String datasourceId = dataSource.getDatasourceId();
-        log.info("准备创建数据源"+datasourceId);
-        String databasetype = dataSource.getDatabaseType();
+        log.info("准备创建数据源--->{}",datasourceId);
+        String databaseType = dataSource.getDatabaseType();
         String username = dataSource.getUserName();
         String password = dataSource.getPassWord();
         String url = dataSource.getUrl();
@@ -256,15 +252,13 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
 //        } else if("sqlserver".equalsIgnoreCase(databasetype)){
 //            driveClass = DBUtil.sql2005driver;
 //        }
-        if(testDatasource(datasourceId,driveClass,url,username,password)) {
-            boolean result = this.createDataSource(datasourceId, driveClass, url, username, password, databasetype);
-            if(!result) {
-                log.error("数据源"+datasourceId+"配置正确，但是创建失败");
-//                throw new ADIException("数据源"+datasourceId+"配置正确，但是创建失败",500);
+        if (testDatasource(datasourceId, driveClass, url, username, password)) {
+            boolean result = this.createDataSource(datasourceId, driveClass, url, username, password, databaseType);
+            if (!result) {
+                log.error("数据源--->" + datasourceId + "配置正确，创建失败");
             }
         } else {
             log.error("数据源配置有错误");
-//            throw new ADIException("数据源配置有错误",500);
         }
     }
 

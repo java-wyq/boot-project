@@ -10,7 +10,7 @@ public class DBContextHolder {
     // 调用此方法，切换数据源
     public static void setDataSource(String dataSource) {
         contextHolder.set(dataSource);
-        log.info("已切换到数据源:{}",dataSource);
+        log.info("已切换到数据源--->{}",dataSource);
     }
 
     // 获取数据源

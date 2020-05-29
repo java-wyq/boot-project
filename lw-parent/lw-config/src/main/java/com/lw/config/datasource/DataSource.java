@@ -16,4 +16,5 @@ public class DataSource {
     private String passWord;
     @NonNull
     private String databaseType;
+    private String tenantId;
 }
