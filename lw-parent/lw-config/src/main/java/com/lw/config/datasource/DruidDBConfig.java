@@ -45,6 +45,11 @@ public class DruidDBConfig {
     private int maxActive;
     @Value("${spring.datasource.maxWait}")
     private int maxWait;
+    //mybatis信息
+    @Value("${mybatis.typeAliasesPackage}")
+    private String typeAliasesPackage;
+    @Value("${mybatis.mapperLocations}")
+    private String mapperLocations;
 
     @Bean // 声明其为Bean实例
     @Primary // 在同样的DataSource中，首先使用被标注的DataSource
@@ -76,11 +81,8 @@ public class DruidDBConfig {
         datasource.setLogAbandoned(true); ////移除泄露连接发生是是否记录日志
         return datasource;
     }
-
-
     /**
      * 注册一个StatViewServlet    druid监控页面配置1-帐号密码配置
-     *
      * @return servlet registration bean
      */
     @Bean
@@ -92,10 +94,8 @@ public class DruidDBConfig {
         servletRegistrationBean.addInitParameter("resetEnable", "false");
         return servletRegistrationBean;
     }
-
     /**
      * 注册一个：filterRegistrationBean   druid监控页面配置2-允许页面正常浏览
-     *
      * @return filter registration bean
      */
     @Bean
@@ -108,7 +108,6 @@ public class DruidDBConfig {
         filterRegistrationBean.addInitParameter("exclusions", "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*");
         return filterRegistrationBean;
     }
-
     @Bean(name = "dynamicDataSource")
     @Qualifier("dynamicDataSource")
     public DynamicDataSource dynamicDataSource() throws SQLException {
@@ -123,29 +122,24 @@ public class DruidDBConfig {
         dynamicDataSource.setTargetDataSources(targetDataSources);
         return dynamicDataSource;
     }
-
     @Bean
     public SqlSessionFactory sqlSessionFactory() throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dynamicDataSource());
         //解决手动创建数据源后字段到bean属性名驼峰命名转换失效的问题
         sqlSessionFactoryBean.setConfiguration(configuration());
-
         // 设置mybatis的主配置文件
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         // Resource mybatisConfigXml = resolver.getResource("classpath:mybatis/mybatis-config.xml");
         //  sqlSessionFactoryBean.setConfigLocation(mybatisConfigXml);
         // 设置别名包
-          sqlSessionFactoryBean.setTypeAliasesPackage("com.lw");
+          sqlSessionFactoryBean.setTypeAliasesPackage(typeAliasesPackage);
         //就是这句代码，只能指定单个mapper.xml文件，加通配符的话找不到文件
-        sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath*:mapper/*.xml"));
+        sqlSessionFactoryBean.setMapperLocations(resolver.getResources(mapperLocations));
         return sqlSessionFactoryBean.getObject();
     }
-
-
     /**
      * 读取驼峰命名设置
-     *
      * @return
      */
     @Bean
@@ -153,5 +147,4 @@ public class DruidDBConfig {
     public org.apache.ibatis.session.Configuration configuration() {
         return new org.apache.ibatis.session.Configuration();
     }
-
 }

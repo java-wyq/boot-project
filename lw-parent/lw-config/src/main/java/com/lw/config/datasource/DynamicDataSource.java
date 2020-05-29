@@ -1,25 +1,20 @@
 package com.lw.config.datasource;
-
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.stat.DruidDataSourceStatManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 import org.springframework.util.StringUtils;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Map;
 import java.util.Set;
-
 
 public class DynamicDataSource extends AbstractRoutingDataSource {
     private boolean debug = true;
     private final Logger log = LoggerFactory.getLogger(getClass());
     private Map<Object, Object> dynamicTargetDataSources;
     private Object dynamicDefaultTargetDataSource;
-
-
     @Override
     protected Object determineCurrentLookupKey() {
         String datasource = DBContextHolder.getDataSource();
@@ -34,20 +29,15 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
         } else {
             log.info("当前数据源--->默认数据源");
         }
-
         return datasource;
     }
 
     @Override
     public void setTargetDataSources(Map<Object, Object> targetDataSources) {
-
         super.setTargetDataSources(targetDataSources);
-
         this.dynamicTargetDataSources = targetDataSources;
 
     }
-
-
     // 创建数据源
     public boolean createDataSource(String key, String driveClass, String url, String username, String password, String databasetype) {
         try {
@@ -109,13 +99,13 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
     }
 
     // 删除数据源
-    public boolean delDatasources(String datasourceid) {
+    public boolean delDatasource(String datasourceId) {
         Map<Object, Object> dynamicTargetDataSources2 = this.dynamicTargetDataSources;
-        if (dynamicTargetDataSources2.containsKey(datasourceid)) {
+        if (dynamicTargetDataSources2.containsKey(datasourceId)) {
             Set<DruidDataSource> druidDataSourceInstances = DruidDataSourceStatManager.getDruidDataSourceInstances();
             for (DruidDataSource l : druidDataSourceInstances) {
-                if (datasourceid.equals(l.getName())) {
-                    dynamicTargetDataSources2.remove(datasourceid);
+                if (datasourceId.equals(l.getName())) {
+                    dynamicTargetDataSources2.remove(datasourceId);
                     DruidDataSourceStatManager.removeDataSource(l);
                     setTargetDataSources(dynamicTargetDataSources2);// 将map赋值给父类的TargetDataSources
                     super.afterPropertiesSet();// 将TargetDataSources中的连接信息放入resolvedDataSources管理
@@ -211,7 +201,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
                 log.error(e.getMessage(), e); //把异常信息打印到日志文件
                 rightFlag = false;
                 log.info("缓存数据源--->" + datasourceId + "已失效，准备删除...");
-                if (delDatasources(datasourceId)) {
+                if (delDatasource(datasourceId)) {
                     log.info("缓存数据源删除成功");
                 } else {
                     log.info("缓存数据源删除失败");
